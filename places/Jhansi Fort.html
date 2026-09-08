@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jhansi Fort - Wander Wise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(30, 63, 102, 0.6), rgba(30, 63, 102, 0.7)),
+                        url('../images/WhatsApp Image 2025-09-18 at 22.21.47.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #F0F5F9;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #FFB74D;
+            color: #1E3F66;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .back-button:hover {
+            background: #FFA726;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #FFB74D;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #FFB74D;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #FFB74D;
+            padding-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-item {
+            background: rgba(30, 63, 102, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFB74D;
+        }
+        
+        .info-item h3 {
+            color: #FFB74D;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-item p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .bullet-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .bullet-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .bullet-list li:before {
+            content: "•";
+            color: #FFB74D;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .highlight {
+            color: #FFB74D;
+            font-weight: 600;
+        }
+        
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 20px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+        
+        <h1>JHANSI FORT</h1>
+        
+        <div class="content-card">
+            <!-- Basic Information Section -->
+            <div class="info-section">
+                <h2>Basic Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h3>Location</h3>
+                        <p>Jhansi, Uttar Pradesh, India</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Built By</h3>
+                        <p>Raja Bir Singh Ju Deo of Orchha</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Area</h3>
+                        <p>15 acres (312m x 225m)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Description Section -->
+            <div class="info-section">
+                <h2>About Jhansi Fort</h2>
+                <div class="description-text">
+                    <p>Spanning a vast expanse of 15 acres, the grand fortress commands attention with its dimensions of 312 meters in length and 225 meters in width. The fort was crafted from solid granite, and its walls boast a thickness ranging from 16 to 20 feet, ensuring its resilience through the ages.</p>
+                    
+                    <p>Built upon the rugged terrain of Bangra Hill by the visionary Raja Bir Singh Ju Deo of Orchha, the fort draws countless tourists and history enthusiasts to its storied gates each year, standing as a testament to India's rich heritage and the bravery of its people.</p>
+                    
+                    <p>Jhansi Fort is most renowned for its association with Rani Lakshmibai and her heroic defense during the 1857 Revolt, making it a symbol of Indian resistance and courage.</p>
+                </div>
+            </div>
+            
+            <!-- Historical Significance Section -->
+            <div class="info-section">
+                <h2>Historical Significance</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">1857 First War of Independence</span> - key center of resistance</li>
+                    <li><span class="highlight">Rani Lakshmibai's brave defense</span> against British forces</li>
+                    <li><span class="highlight">Daring escape</span> through Bhanderi Gate</li>
+                    <li><span class="highlight">Symbol of freedom struggle</span> igniting national pride</li>
+                    <li><span class="highlight">Indian resistance legacy</span> inspiring generations</li>
+                </ul>
+            </div>
+            
+            <!-- Architectural Features Section -->
+            <div class="info-section">
+                <h2>Architectural Features</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Solid granite construction</span> ensuring durability</li>
+                    <li><span class="highlight">Massive walls</span> 16-20 feet thick</li>
+                    <li><span class="highlight">Bangra Hill location</span> providing strategic advantage</li>
+                    <li><span class="highlight">Ten majestic gates</span> with unique names and histories</li>
+                    <li><span class="highlight">Imposing structure</span> spanning 15 acres</li>
+                </ul>
+            </div>
+            
+            <!-- The Ten Gates Section -->
+            <div class="info-section">
+                <h2>The Ten Gates</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Bhanderi Gate</span> - Rani Lakshmibai's escape route</li>
+                    <li><span class="highlight">Khandero Gate</span> - steeped in legend and lore</li>
+                    <li><span class="highlight">Datia Darwaza</span> - connecting to neighboring region</li>
+                    <li><span class="highlight">Unnao Gate, Jharna Gate</span> - additional access points</li>
+                    <li><span class="highlight">Laxmi Gate, Sagar Gate</span> - named after deities</li>
+                    <li><span class="highlight">Orcha Gate, Sainyar Gate, Chand Gate</span> - completing the ten</li>
+                </ul>
+            </div>
+            
+            <!-- Rani Lakshmibai's Legacy Section -->
+            <div class="info-section">
+                <h2>Rani Lakshmibai's Legacy</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Brave queen of Jhansi</span> defying British arrest</li>
+                    <li><span class="highlight">Strategic escape</span> evading capture during revolt</li>
+                    <li><span class="highlight">Freedom fighter</span> inspiring national movement</li>
+                    <li><span class="highlight">Symbol of courage</span> for Indian women warriors</li>
+                    <li><span class="highlight">Historical icon</span> remembered for valor</li>
+                </ul>
+            </div>
+            
+            <!-- Visitor Experience Section -->
+            <div class="info-section">
+                <h2>Visitor Experience</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Historical immersion</span> in 1857 revolt stories</li>
+                    <li><span class="highlight">Architectural exploration</span> of granite fortress</li>
+                    <li><span class="highlight">Gate-by-gate discovery</span> of ten majestic entrances</li>
+                    <li><span class="highlight">Panoramic views</span> from Bangra Hill location</li>
+                    <li><span class="highlight">Cultural heritage</span> understanding Indian resistance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

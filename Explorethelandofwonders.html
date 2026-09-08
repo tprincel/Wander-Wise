@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CRITICAL for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Destinations - Wander Wise</title>
+    
+    <!-- 1. LEAFLET CSS (Required for map functionality and styling) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <!-- 2. Tailwind CSS for clean, mobile-friendly design and styling popups -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* 3. CRITICAL: The map div MUST have a defined height */
+        #map {
+            height: 70vh; /* Adjusted height to make space for controls */
+            width: 98%;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        /* Custom styling for Leaflet popups using Tailwind classes */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px !important;
+            padding: 0 !important;
+        }
+        .guide-popup {
+            padding: 1rem;
+            max-width: 250px;
+        }
+        
+        /* --- CUSTOM PIN STYLES --- */
+        
+        /* Shared Pin Shape (Medium size, teardrop) */
+        .marker-pin {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            /* Creates the teardrop shape with a sharp point down-left before rotation */
+            border-radius: 50% 50% 50% 0; 
+            transform: rotate(-45deg); /* Rotates it to point straight down */
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border: 3px solid; /* Border defined by specific color class */
+        }
+        
+        /* Blue Marker (Location Only) - Only marker type remaining */
+        .marker-blue {
+            background-color: #3b82f6; /* Blue-500 */
+            border-color: #1e40af; /* Darker blue border */
+        }
+        /* Dot inside the pin for better contrast */
+        .marker-pin::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            margin: 5px 0 0 5px; /* Centers the dot */
+            background: #ffffff; /* White center dot */
+            position: absolute;
+            border-radius: 50%;
+            transform: rotate(45deg); /* Counter-rotate dot to keep it horizontal */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans p-2 md:p-4">
+
+    <!-- Header and Controls -->
+    <header class="py-4 bg-white rounded-xl shadow-lg mb-4 max-w-6xl mx-auto">
+        <h1 class="text-center text-2xl md:text-3xl font-extrabold text-indigo-700 mb-4">
+            Wander Wise - Explore Destinations
+        </h1>
+
+        <!-- Selection Controls: Only the State Selector remains -->
+        <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 px-4">
+            
+            <!-- State Selector -->
+            <div class="w-full md:w-1/2">
+                <label for="stateSelect" class="block text-sm font-medium text-gray-700 mb-1">Select State:</label>
+                <select id="stateSelect" onchange="handleStateSelection(this.value)" 
+                        class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">-- Select a State --</option>
+                    <!-- States populated by JS -->
+                </select>
+            </div>
+            
+            <!-- Removed Place Selector -->
+        </div>
+
+        <p id="map-message" class="text-center text-sm text-gray-500 mt-4">
+            <!-- This message remains empty as requested -->
+        </p>
+    </header>
+
+    <!-- 4. THE MAP CONTAINER -->
+    <div id="map"></div>
+
+    <!-- 5. LEAFLET JAVASCRIPT (Must be loaded before the custom script) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    
+    <!-- 6. MAP INITIALIZATION AND DATA SCRIPT -->
+    <script>
+        // --- DATA SETUP ---
+        
+        // This list is expanded to include all 50 requested spots across the 10 states.
+        const allPlaces = [
+            // 1. Rajasthan (Jaipur, Udaipur, Jaisalmer, Jodhpur, Mount Abu)
+            { name: "Jaipur", state: "Rajasthan", coords: [26.9124, 75.7873] },
+            { name: "Udaipur", state: "Rajasthan", coords: [24.5854, 73.7125] },
+            { name: "Jaisalmer", state: "Rajasthan", coords: [26.9157, 70.9083] },
+            { name: "Jodhpur", state: "Rajasthan", coords: [26.2389, 73.0243] },
+            { name: "Mount Abu", state: "Rajasthan", coords: [24.5925, 72.7099] },
+
+            // 2. Himachal Pradesh (Manali, Shimla, Dharamshala, Kullu, Dalhousie)
+            { name: "Manali", state: "Himachal Pradesh", coords: [32.2394, 77.1892] },
+            { name: "Shimla", state: "Himachal Pradesh", coords: [31.1048, 77.1734] },
+            { name: "Dharamshala", state: "Himachal Pradesh", coords: [32.2190, 76.3235] },
+            { name: "Kullu", state: "Himachal Pradesh", coords: [31.9576, 77.1118] },
+            { name: "Dalhousie", state: "Himachal Pradesh", coords: [32.5398, 75.9930] },
+
+            // 3. Madhya Pradesh (Khajuraho, Sanchi, Bhopal, Gwalior, Kanha National Park)
+            { name: "Khajuraho", state: "Madhya Pradesh", coords: [24.8315, 79.9213] },
+            { name: "Sanchi Stupa", state: "Madhya Pradesh", coords: [23.4754, 77.7380] },
+            { name: "Bhopal", state: "Madhya Pradesh", coords: [23.2599, 77.4126] },
+            { name: "Gwalior", state: "Madhya Pradesh", coords: [26.2183, 78.1828] },
+            { name: "Kanha National Park", state: "Madhya Pradesh", coords: [22.3392, 80.6548] },
+
+            // 4. Kerala (Munnar, Alleppey, Kochi, Wayanad, Thekkady)
+            { name: "Munnar", state: "Kerala", coords: [10.0889, 77.0595] },
+            { name: "Alleppey", state: "Kerala", coords: [9.4981, 76.3388] },
+            { name: "Kochi", state: "Kerala", coords: [9.9667, 76.2422] },
+            { name: "Wayanad", state: "Kerala", coords: [11.6853, 76.1328] },
+            { name: "Thekkady", state: "Kerala", coords: [9.6050, 77.1437] },
+
+            // 5. Goa (Calangute Beach, Baga Beach, Fort Aguada, Dudhsagar Falls, Old Goa)
+            { name: "Calangute Beach", state: "Goa", coords: [15.5491, 73.7548] },
+            { name: "Baga Beach", state: "Goa", coords: [15.5562, 73.7533] },
+            { name: "Fort Aguada", state: "Goa", coords: [15.4851, 73.7749] },
+            { name: "Dudhsagar Falls", state: "Goa", coords: [15.3146, 74.2520] },
+            { name: "Old Goa", state: "Goa", coords: [15.5009, 73.9137] },
+
+            // 6. Uttarakhand (Nainital, Mussoorie, Rishikesh, Haridwar, Jim Corbett National Park)
+            { name: "Nainital", state: "Uttarakhand", coords: [29.3803, 79.4670] },
+            { name: "Mussoorie", state: "Uttarakhand", coords: [30.4598, 78.0676] },
+            { name: "Rishikesh", state: "Uttarakhand", coords: [30.0869, 78.2676] },
+            { name: "Haridwar", state: "Uttarakhand", coords: [29.9457, 78.1642] },
+            { name: "Jim Corbett National Park", state: "Uttarakhand", coords: [29.5394, 78.9329] },
+
+            // 7. Delhi (Red Fort, Qutub Minar, India Gate, Lotus Temple, Humayun’s Tomb)
+            { name: "Red Fort", state: "Delhi", coords: [28.6562, 77.2410] },
+            { name: "Qutub Minar", state: "Delhi", coords: [28.5245, 77.1855] },
+            { name: "India Gate", state: "Delhi", coords: [28.6129, 77.2295] },
+            { name: "Lotus Temple", state: "Delhi", coords: [28.5535, 77.2588] },
+            { name: "Humayun’s Tomb", state: "Delhi", coords: [28.5830, 77.2528] },
+
+            // 8. Tamil Nadu (Chennai, Madurai, Rameswaram, Kanyakumari, Ooty)
+            { name: "Chennai", state: "Tamil Nadu", coords: [13.0827, 80.2707] },
+            { name: "Madurai", state: "Tamil Nadu", coords: [9.9252, 78.1198] },
+            { name: "Rameswaram", state: "Tamil Nadu", coords: [9.2882, 79.3174] },
+            { name: "Kanyakumari", state: "Tamil Nadu", coords: [8.0883, 77.5385] },
+            { name: "Ooty", state: "Tamil Nadu", coords: [11.4064, 76.6932] },
+
+            // 9. Maharashtra (Mumbai, Pune, Ajanta & Ellora Caves, Lonavala, Mahabaleshwar)
+            { name: "Mumbai", state: "Maharashtra", coords: [18.9667, 72.8333] },
+            { name: "Pune", state: "Maharashtra", coords: [18.5204, 73.8567] },
+            { name: "Ajanta & Ellora Caves", state: "Maharashtra", coords: [20.5369, 75.7262] }, // Central point
+            { name: "Lonavala", state: "Maharashtra", coords: [18.7523, 73.4150] },
+            { name: "Mahabaleshwar", state: "Maharashtra", coords: [17.9202, 73.6558] },
+
+            // 10. West Bengal (Kolkata, Darjeeling, Sundarbans, Kalimpong, Digha)
+            { name: "Kolkata", state: "West Bengal", coords: [22.5726, 88.3639] },
+            { name: "Darjeeling", state: "West Bengal", coords: [27.0340, 88.2650] },
+            { name: "Sundarbans National Park", state: "West Bengal", coords: [21.9000, 89.1700] },
+            { name: "Kalimpong", state: "West Bengal", coords: [27.0600, 88.4700] },
+            { name: "Digha", state: "West Bengal", coords: [21.6253, 87.5252] },
+        ];
+
+        // --- MAP INITIALIZATION ---
+        const INDIA_CENTER = [21.0, 78.0]; 
+        const INITIAL_ZOOM = 5;
+        const map = L.map('map').setView(INDIA_CENTER, INITIAL_ZOOM);
+        
+        let currentMarkers = []; 
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // --- CUSTOM MARKER ICONS ---
+
+        // Blue Icon: For all locations
+        const BlueIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: '<div class="marker-pin marker-blue"></div>',
+            iconSize: [24, 24], 
+            iconAnchor: [12, 24], 
+            popupAnchor: [0, -20] 
+        });
+
+        // --- NAVIGATION LOGIC (NEW) ---
+        /**
+         * Redirects the user to the planmytrip.html page, passing the location name.
+         * @param {string} location - The name of the selected location.
+         */
+        function redirectToPlanTrip(location) {
+            // Encode the location name to safely pass it in the URL
+            const encodedLocation = encodeURIComponent(location);
+            // Navigate to the planmytrip.html file with the location as a query parameter
+            window.location.href = `planmytrip.html?location=${encodedLocation}`;
+        }
+        window.redirectToPlanTrip = redirectToPlanTrip; // Make function accessible globally from popup HTML
+
+        // --- DROPDOWN LOGIC ---
+
+        function populateStates() {
+            const stateSelect = document.getElementById('stateSelect');
+            // Extract unique states, sort them, and populate the dropdown. 
+            const states = [...new Set(allPlaces.map(p => p.state))].sort();
+
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+        
+        function handleStateSelection(selectedState) {
+            // 1. Remove all previous markers
+            currentMarkers.forEach(marker => map.removeLayer(marker));
+            currentMarkers = [];
+            
+            if (!selectedState) {
+                // If the user deselects the state, reset view to India center
+                map.setView(INDIA_CENTER, INITIAL_ZOOM);
+                return;
+            }
+
+            const placesInState = allPlaces.filter(p => p.state === selectedState);
+            const latLngs = [];
+
+            placesInState.forEach(place => {
+                
+                // Pop-up now calls the new redirectToPlanTrip function
+                const popupContent = `
+                    <div class="guide-popup flex flex-col items-start space-y-2">
+                        <h4 class="text-xl font-bold text-blue-600">${place.name}</h4>
+                        <p class="text-sm text-gray-700">State: ${place.state}</p>
+                        
+                        <button 
+                            onclick="redirectToPlanTrip('${place.name.replace(/'/g, "\\'")}')" 
+                            class="w-full py-2 px-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition duration-150 shadow-md">
+                            Plan my trip
+                        </button>
+                    </div>
+                `;
+                // NOTE: Added .replace(/'/g, "\\'") for safe string handling in the onclick attribute.
+
+                const marker = L.marker(place.coords, { icon: BlueIcon })
+                    .addTo(map)
+                    .bindPopup(popupContent);
+                
+                currentMarkers.push(marker);
+                latLngs.push(place.coords); // Collect coordinates for map fit
+            });
+
+            // 3. Adjust map view to fit all markers in the state
+            if (latLngs.length > 0) {
+                if (latLngs.length === 1) {
+                    map.setView(latLngs[0], 13);
+                } else {
+                    const bounds = L.latLngBounds(latLngs);
+                    map.fitBounds(bounds, { padding: [50, 50] }); 
+                }
+            }
+        }
+        
+        // Initialize state dropdown on load
+        document.addEventListener('DOMContentLoaded', populateStates);
+
+        // --- MODAL LOGIC (REMOVED) --- 
+        // The modal logic has been removed as we are now redirecting instead.
+    </script>
+
+    <!-- Custom Modal UI for feedback (REMOVED) -->
+    <!-- The custom-modal div has been removed. -->
+
+</body>
+</html>

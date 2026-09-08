@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wander Wise - Tourism Packages</title>
+    <style>
+        /* Your Homepage Color Scheme */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3a7c 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        /* Top Navigation Bar - Modified to single green HOME button */
+        .top-nav {
+            background-color: #1E3F66;
+            padding: 15px 20px;
+            text-align: right;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #FFB74D;
+        }
+        .home-btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            background-color: #28a745; /* Green color */
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 10px 25px;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .home-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #fff;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            color: #e0e0e0;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        /* Available Packages Section */
+        .available-packages {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: fit-content;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #1a2a6c;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-weight: bold;
+            color: #1a2a6c;
+            text-align: center;
+        }
+        
+        .filter-group select {
+            padding: 10px 15px;
+            border: 2px solid #1a2a6c;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        .packages-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            max-height: 800px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .package-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .package-content {
+            padding: 0;
+        }
+        
+        .package-category {
+            background: #1a2a6c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .package-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+        
+        .package-destination {
+            color: #2a3a7c;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .package-duration {
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .package-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 10px 0;
+        }
+        
+        .package-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3a7c 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        
+        .book-btn:hover {
+            background: linear-gradient(135deg, #2a3a7c 0%, #1a2a6c 100%);
+        }
+        
+        /* Custom Package Builder */
+        .package-builder {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: fit-content;
+        }
+        
+        .builder-title {
+            text-align: center;
+            color: #1a2a6c;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .builder-filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .preview-section {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #1a2a6c;
+            margin-top: 20px;
+        }
+        
+        .preview-section h3 {
+            margin-top: 0;
+            color: #1a2a6c;
+        }
+        
+        .preview-details {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .create-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .create-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .create-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .no-packages {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            color: #666;
+            font-size: 1.1em;
+            grid-column: 1 / -1;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        /* Modal Styles for Booking Form - MODIFIED TO TWO COLUMNS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px; /* Increased width for two columns */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Two-column layout for booking form */
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .package-summary-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .booking-form-section {
+            padding: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1a2a6c;
+            outline: none;
+        }
+
+        .package-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .package-summary h3 {
+            margin-top: 0;
+            color: #1a2a6c;
+            border-bottom: 2px solid #1a2a6c;
+            padding-bottom: 10px;
+        }
+
+        .summary-details {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .summary-total {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        /* Remove image placeholder */
+        .package-image {
+            display: none;
+        }
+
+        /* Responsive design for modal */
+        @media (max-width: 768px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar - MODIFIED to single green HOME button -->
+    <nav class="top-nav">
+        <button class="home-btn" onclick="window.location.href='index.html'">HOME</button>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Wander Wise</h1>
+            <p>Plan your trip, Relax your mind, Seek adventure and Prosper in memories.</p>
+        </div>
+        
+        <div class="main-content">
+            <!-- Available Packages Section -->
+            <section class="available-packages">
+                <h2 class="section-title">Available Fixed Packages</h2>
+                
+                <!-- Filter Dropdowns -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="stateFilter">Filter by State:</label>
+                        <select id="stateFilter" onchange="filterPackages()">
+                            <option value="all">All States</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Himachal">Himachal</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="West Bengal">West Bengal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="categoryFilter">Filter by Category:</label>
+                        <select id="categoryFilter" onchange="filterPackages()">
+                            <option value="all">All Categories</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="nature">Nature</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="beach">Beach</option>
+                            <option value="spiritual">Spiritual</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="durationFilter">Filter by Duration:</label>
+                        <select id="durationFilter" onchange="filterPackages()">
+                            <option value="all">Any Duration</option>
+                            <option value="3">3 Days</option>
+                            <option value="5">5 Days</option>
+                            <option value="7">7 Days</option>
+                            <option value="10">10+ Days</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Packages will be displayed here -->
+                <div id="packagesContainer" class="packages-container">
+                    <div class="no-packages">
+                        <h3>Loading packages...</h3>
+                        <p>Please wait while we load packages from the database.</p>
+                    </div>
+                </div>
+                
+                <div id="loading" class="loading" style="display: none;">
+                    Loading packages from database...
+                </div>
+            </section>
+
+            <!-- Custom Package Builder Section -->
+            <section class="package-builder">
+                <h2 class="builder-title">Build Your Custom Package</h2>
+                
+                <!-- Custom Package Filters -->
+                <div class="builder-filters">
+                    <div class="filter-group">
+                        <label for="customState">Choose Destination:</label>
+                        <select id="customState" onchange="updateCustomPackage()">
+                            <option value="">Select State</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Himachal">Himachal Pradesh</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="West Bengal">West Bengal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="customDays">Number of Days:</label>
+                        <select id="customDays" onchange="updateCustomPackage()">
+                            <option value="">Select Days</option>
+                            <option value="3">3 Days</option>
+                            <option value="5">5 Days</option>
+                            <option value="7">7 Days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="customPeople">Number of People:</label>
+                        <select id="customPeople" onchange="updateCustomPackage()">
+                            <option value="">Select People</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5">5 People</option>
+                            <option value="6">6 People</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <h3>Your Custom Package Preview</h3>
+                    <div class="preview-details" id="packagePreview">
+                        Please select destination, days, and people to see your custom package
+                    </div>
+                    <a href="#" class="create-btn" id="createBtn" onclick="showBookingForm('custom')">
+                        Create Custom Package
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- MODIFIED Booking Form Modal - Split into two columns -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingForm()">&times;</span>
+            <h2 style="text-align: center; color: #1a2a6c;">Book Your Package</h2>
+            
+            <div class="booking-container">
+                <!-- Left Column - Package Summary -->
+                <div class="package-summary-section">
+                    <h3 style="color: #1a2a6c; margin-top: 0;">Package Summary</h3>
+                    <div class="package-summary">
+                        <div class="summary-details" id="packageSummary">
+                            <!-- Package details will be inserted here by JavaScript -->
+                        </div>
+                        <div class="summary-total" id="packageTotal">
+                            <!-- Total amount will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Booking Form -->
+                <div class="booking-form-section">
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="customerName">Full Name:</label>
+                            <input type="text" id="customerName" name="customerName" required>
+                        </div>
+                        
+                        <div class="form-group">
+    <label for="customerEmail">Email:</label>
+    <input type="email" id="customerEmail" name="customerEmail" required>
+    <small style="color: #666; font-size: 12px;">Please enter a valid email address</small>
+</div>
+                        
+                        <div class="form-group">
+                            <label for="customerPhone">Phone:</label>
+                            <input type="tel" id="customerPhone" name="customerPhone" 
+                                   pattern="[0-9]{10}" required>
+                            <small style="color: #666; font-size: 12px;">Please enter a 10-digit phone number</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="peopleCount">Number of People:</label>
+                            <select id="peopleCount" required>
+                                <option value="">Select Number of People</option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5+">5+ People</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="travelDate">Travel Date:</label>
+                            <input type="date" id="travelDate" name="travelDate" required>
+                        </div>
+                        
+                        <button type="submit" class="create-btn" style="width: 100%; margin-top: 20px;">
+                            Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let packageConfig = {
+            state: null,
+            days: null,
+            people: null,
+            price: 0
+        };
+        
+        let allPackages = []; // Store all packages for filtering
+        let currentBookingPackage = null;
+
+        // Load packages when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply URL search parameters (e.g. from form.html)
+            const urlParams = new URLSearchParams(window.location.search);
+            const destinationParam = urlParams.get('destination') || urlParams.get('state');
+            if (destinationParam) {
+                const stateSelect = document.getElementById('stateFilter');
+                if (stateSelect) {
+                    for (let opt of stateSelect.options) {
+                        if (opt.value.toLowerCase() === destinationParam.toLowerCase()) {
+                            stateSelect.value = opt.value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Display current logged in user if available
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                if (currentUser && currentUser.username) {
+                    const nav = document.querySelector('.top-nav');
+                    if (nav && !document.getElementById('navUserBadge')) {
+                        const userBadge = document.createElement('span');
+                        userBadge.id = 'navUserBadge';
+                        userBadge.className = 'nav-link';
+                        userBadge.style.color = '#FFB74D';
+                        userBadge.textContent = `👤 ${currentUser.username}`;
+                        nav.appendChild(userBadge);
+                    }
+                }
+            } catch (e) {
+                console.warn('User session check notice:', e);
+            }
+
+            loadAllPackages();
+        });
+
+        // Load all packages for filtering - FIXED VERSION
+        function loadAllPackages() {
+            const loading = document.getElementById('loading');
+            const packagesContainer = document.getElementById('packagesContainer');
+            
+            console.log('Starting to load packages from packages.php...');
+            
+            loading.style.display = 'block';
+            packagesContainer.innerHTML = '<div class="no-packages"><h3>Loading packages...</h3><p>Please wait while we load available tours.</p></div>';
+
+            fetch('packages.php?' + new Date().getTime())
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(packages => {
+                    console.log('Packages loaded from database:', packages);
+                    
+                    if (!Array.isArray(packages) || packages.length === 0) {
+                        throw new Error('Database returned empty or non-array package list');
+                    }
+                    
+                    allPackages = packages;
+                    filterPackages();
+                })
+                .catch(error => {
+                    console.error('Error loading packages from backend:', error);
+                    useFallbackPackages();
+                })
+                .finally(() => {
+                    loading.style.display = 'none';
+                });
+        }
+
+        // Fallback packages when database is not yet initialized
+        function useFallbackPackages() {
+            console.log('Using fallback default packages');
+            allPackages = [
+                { id: 1, name: 'Golden Triangle Explorer', destination: 'Delhi, Agra, Jaipur', duration: 7, price: 25000, category: 'cultural', state: 'Rajasthan', description: 'Experience the Taj Mahal, Amber Fort, and historical northern heritage.' },
+                { id: 2, name: 'Royal Rajasthan Heritage Tour', destination: 'Jaipur, Jodhpur, Udaipur', duration: 8, price: 32000, category: 'cultural', state: 'Rajasthan', description: 'Desert palaces, scenic lakes, and royal culture.' },
+                { id: 3, name: 'Kerala Backwaters & Tea Hills', destination: 'Munnar, Alleppey, Kochi', duration: 5, price: 18500, category: 'wildlife', state: 'Kerala', description: 'Houseboat backwater cruises and mountain tea trails.' },
+                { id: 4, name: 'Himachal Snow Valley Tour', destination: 'Shimla, Kullu, Manali', duration: 6, price: 22000, category: 'adventure', state: 'Himachal Pradesh', description: 'Snowy Himalayan peaks, valleys, and river rafting.' },
+                { id: 5, name: 'Goa Coastal Sunshine', destination: 'Calangute, Panaji, Old Goa', duration: 4, price: 15000, category: 'beach', state: 'Goa', description: 'Golden beaches, water sports, and Portuguese architecture.' },
+                { id: 6, name: 'Spiritual Ganga & Sacred Ghats', destination: 'Varanasi, Ayodhya', duration: 5, price: 16000, category: 'religious', state: 'Uttar Pradesh', description: 'Evening Ganga Aarti and ancient temple heritage.' }
+            ];
+            filterPackages();
+        }
+
+        // Filter packages based on dropdown selections
+        function filterPackages() {
+            try {
+                const stateFilter = document.getElementById('stateFilter').value;
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const durationFilter = document.getElementById('durationFilter').value;
+
+                let filteredPackages = allPackages;
+
+                // Filter by state
+                if (stateFilter !== 'all') {
+                    filteredPackages = filteredPackages.filter(pkg => {
+                        return pkg && pkg.state && pkg.state.toLowerCase() === stateFilter.toLowerCase();
+                    });
+                }
+
+                // Filter by category
+                if (categoryFilter !== 'all') {
+                    filteredPackages = filteredPackages.filter(pkg => {
+                        return pkg && pkg.category && pkg.category.toLowerCase() === categoryFilter.toLowerCase();
+                    });
+                }
+
+                // Filter by duration
+                if (durationFilter !== 'all') {
+                    if (durationFilter === '10') {
+                        filteredPackages = filteredPackages.filter(pkg => 
+                            pkg && pkg.duration && parseInt(pkg.duration) >= 10
+                        );
+                    } else {
+                        filteredPackages = filteredPackages.filter(pkg => 
+                            pkg && pkg.duration && parseInt(pkg.duration) === parseInt(durationFilter)
+                        );
+                    }
+                }
+
+                displayPackages(filteredPackages);
+            } catch (error) {
+                console.error('Error filtering packages:', error);
+                displayFilterError(error);
+            }
+        }
+
+        // Display error for filtering - CORRECTED VERSION
+        function displayFilterError(error) {
+            const packagesContainer = document.getElementById('packagesContainer');
+            packagesContainer.innerHTML = `
+                <div class="no-packages">
+                    <h3>Error filtering packages</h3>
+                    <p>${error.message}</p>
+                    <button onclick="loadAllPackages()" class="book-btn" style="margin-top: 15px;">
+                        Reload Packages
+                    </button>
+                </div>
+            `;
+        }
+
+        // Display packages in the container
+        function displayPackages(packages) {
+            const packagesContainer = document.getElementById('packagesContainer');
+            
+            try {
+                if (!packages || packages.length === 0) {
+                    packagesContainer.innerHTML = `
+                        <div class="no-packages">
+                            <h3>No packages found</h3>
+                            <p>Try changing your filter criteria</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                packagesContainer.innerHTML = packages.map(pkg => {
+                    if (!pkg || typeof pkg !== 'object') {
+                        return '';
+                    }
+                    
+                    const packageName = pkg.name || 'Unnamed Package';
+                    const destination = pkg.destination || 'Destination not specified';
+                    const duration = pkg.duration || 'N/A';
+                    const price = pkg.price ? parseFloat(pkg.price) : 0;
+                    const category = pkg.category ? pkg.category.toUpperCase() : 'TOUR';
+                    const description = pkg.description || 'No description available';
+                    const packageId = pkg.id || 0;
+
+                    if (isNaN(price)) {
+                        return '';
+                    }
+
+                    return `
+                        <div class="package-card">
+                            <div class="package-content">
+                                <div class="package-category">${category}</div>
+                                <h3 class="package-title">${packageName}</h3>
+                                <p class="package-destination">📍 ${destination}</p>
+                                <p class="package-duration">⏱️ ${duration} days</p>
+                                <p class="package-price">₹${price.toLocaleString()}</p>
+                                <p class="package-description">${description}</p>
+                                <a href="#" class="book-btn" onclick="showBookingForm('fixed', ${packageId})">
+                                    Book Now - ₹${price.toLocaleString()}
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).filter(html => html !== '').join('');
+
+                if (packagesContainer.innerHTML === '') {
+                    throw new Error('No valid packages to display');
+                }
+
+            } catch (error) {
+                packagesContainer.innerHTML = `
+                    <div class="no-packages">
+                        <h3>Error displaying packages</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Custom Package Builder Functions
+        function updateCustomPackage() {
+            try {
+                const state = document.getElementById('customState').value;
+                const days = document.getElementById('customDays').value;
+                const people = document.getElementById('customPeople').value;
+                
+                packageConfig.state = state;
+                packageConfig.days = days;
+                packageConfig.people = people;
+                
+                updatePackagePreview();
+            } catch (error) {
+                console.error('Error updating custom package:', error);
+                displayCustomPackageError(error);
+            }
+        }
+
+        function displayCustomPackageError(error) {
+            const preview = document.getElementById('packagePreview');
+            preview.innerHTML = `
+                <div class="error-message">
+                    Error updating package: ${error.message}
+                </div>
+            `;
+        }
+
+        function updatePackagePreview() {
+            const preview = document.getElementById('packagePreview');
+            const createBtn = document.getElementById('createBtn');
+            
+            try {
+                if (packageConfig.state && packageConfig.days && packageConfig.people) {
+                    const totalPrice = calculatePrice();
+                    packageConfig.price = totalPrice;
+                    
+                    preview.innerHTML = `
+                        <strong>Destination:</strong> ${packageConfig.state}<br>
+                        <strong>Duration:</strong> ${packageConfig.days} days<br>
+                        <strong>Travelers:</strong> ${packageConfig.people} person(s)<br>
+                        <strong>Estimated Price:</strong> ₹${totalPrice.toLocaleString()}
+                    `;
+                    createBtn.style.pointerEvents = 'auto';
+                    createBtn.style.opacity = '1';
+                } else {
+                    preview.innerHTML = 'Please select destination, days, and people to see your custom package';
+                    createBtn.style.pointerEvents = 'none';
+                    createBtn.style.opacity = '0.6';
+                }
+            } catch (error) {
+                preview.innerHTML = `
+                    <div class="error-message">
+                        Error calculating package: ${error.message}
+                    </div>
+                `;
+                createBtn.style.pointerEvents = 'none';
+                createBtn.style.opacity = '0.6';
+            }
+        }
+
+        function calculatePrice() {
+            try {
+                const basePrices = {
+                    'Rajasthan': 8000, 'Himachal': 7000, 'Madhya Pradesh': 6000,
+                    'Kerala': 7500, 'Goa': 9000, 'Uttarakhand': 6500, 'Delhi': 5000,
+                    'Tamil Nadu': 7000, 'Maharashtra': 7500, 'West Bengal': 6000
+                };
+                
+                const basePrice = basePrices[packageConfig.state] || 6000;
+                const daysMultiplier = parseInt(packageConfig.days);
+                const peopleMultiplier = parseInt(packageConfig.people);
+                
+                if (isNaN(daysMultiplier) || daysMultiplier <= 0) {
+                    throw new Error('Invalid number of days');
+                }
+                if (isNaN(peopleMultiplier) || peopleMultiplier <= 0) {
+                    throw new Error('Invalid number of people');
+                }
+                if (isNaN(basePrice) || basePrice <= 0) {
+                    throw new Error('Invalid base price for destination');
+                }
+                
+                return basePrice * daysMultiplier * peopleMultiplier;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // Booking Form Functions
+        function showBookingForm(type, packageId = null) {
+            try {
+                event.preventDefault();
+                currentBookingPackage = null;
+                
+                if (type === 'fixed' && packageId) {
+                    const package = allPackages.find(p => p && p.id == packageId);
+                    if (!package) {
+                        throw new Error('Selected package not found');
+                    }
+                    
+                    currentBookingPackage = {
+                        type: 'fixed',
+                        id: package.id,
+                        name: package.name || 'Unknown Package',
+                        destination: package.destination || 'Unknown Destination',
+                        duration: package.duration || 'Unknown',
+                        price: package.price ? parseFloat(package.price) : 0,
+                        category: package.category || 'General',
+                        state: package.state || 'Unknown'
+                    };
+                } else if (type === 'custom') {
+                    if (!packageConfig.state || !packageConfig.days || !packageConfig.people) {
+                        throw new Error('Please complete all custom package fields');
+                    }
+                    
+                    currentBookingPackage = {
+                        type: 'custom',
+                        name: `Custom ${packageConfig.state} Tour`,
+                        destination: packageConfig.state,
+                        duration: packageConfig.days,
+                        price: packageConfig.price,
+                        people: packageConfig.people
+                    };
+                } else {
+                    throw new Error('Invalid booking type');
+                }
+                
+                if (!currentBookingPackage || currentBookingPackage.price <= 0) {
+                    throw new Error('Invalid package price');
+                }
+                
+                updatePackageSummary();
+
+                // Auto-fill logged-in customer profile if available
+                try {
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                    if (currentUser) {
+                        const nameField = document.getElementById('customerName');
+                        const emailField = document.getElementById('customerEmail');
+                        const phoneField = document.getElementById('customerPhone');
+
+                        if (nameField && currentUser.username) nameField.value = currentUser.username;
+                        if (emailField && currentUser.email) emailField.value = currentUser.email;
+                        if (phoneField && currentUser.phone) phoneField.value = currentUser.phone;
+                    }
+                } catch (e) {
+                    console.warn('Customer prefill notice:', e);
+                }
+
+                document.getElementById('bookingModal').style.display = 'block';
+                
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        function closeBookingForm() {
+            try {
+                document.getElementById('bookingModal').style.display = 'none';
+                document.getElementById('bookingForm').reset();
+                currentBookingPackage = null;
+            } catch (error) {
+                console.error('Error closing booking form:', error);
+            }
+        }
+
+        function updatePackageSummary() {
+            try {
+                const packageSummary = document.getElementById('packageSummary');
+                const packageTotal = document.getElementById('packageTotal');
+                
+                if (!currentBookingPackage) {
+                    throw new Error('No booking package selected');
+                }
+                
+                if (currentBookingPackage.type === 'fixed') {
+                    packageSummary.innerHTML = `
+                        <p><strong>Package:</strong> ${currentBookingPackage.name}</p>
+                        <p><strong>Destination:</strong> ${currentBookingPackage.destination}</p>
+                        <p><strong>Duration:</strong> ${currentBookingPackage.duration} days</p>
+                        <p><strong>Category:</strong> ${currentBookingPackage.category}</p>
+                    `;
+                } else {
+                    packageSummary.innerHTML = `
+                        <p><strong>Package:</strong> ${currentBookingPackage.name}</p>
+                        <p><strong>Destination:</strong> ${currentBookingPackage.destination}</p>
+                        <p><strong>Duration:</strong> ${currentBookingPackage.duration} days</p>
+                        <p><strong>Travelers:</strong> ${currentBookingPackage.people} person(s)</p>
+                    `;
+                }
+                
+                packageTotal.innerHTML = `Total Amount: ₹${currentBookingPackage.price.toLocaleString()}`;
+            } catch (error) {
+                const packageSummary = document.getElementById('packageSummary');
+                packageSummary.innerHTML = `<div class="error-message">Error loading package details</div>`;
+            }
+        }
+
+        // Handle form submission - DATABASE VERSION
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                if (!currentBookingPackage) {
+                    throw new Error('No package selected for booking');
+                }
+                
+                const customerName = document.getElementById('customerName').value.trim();
+                const customerEmail = document.getElementById('customerEmail').value.trim();
+                const customerPhone = document.getElementById('customerPhone').value.trim();
+                const travelDate = document.getElementById('travelDate').value;
+                const peopleCount = document.getElementById('peopleCount').value;
+                
+                // Validation
+                if (!customerName) throw new Error('Please enter your full name');
+                if (!customerEmail || !isValidEmail(customerEmail)) throw new Error('Please enter a valid email address');
+                if (!customerPhone || !isValidPhone(customerPhone)) throw new Error('Please enter a valid 10-digit phone number');
+                if (!travelDate) throw new Error('Please select a travel date');
+                if (!peopleCount) throw new Error('Please select number of people');
+                
+                const bookingData = {
+                    customerName: customerName,
+                    customerEmail: customerEmail,
+                    customerPhone: customerPhone,
+                    travelDate: travelDate,
+                    peopleCount: peopleCount,
+                    package: currentBookingPackage
+                };
+                
+                console.log('Saving to database:', bookingData);
+                
+                // Save to database
+                const saveResult = await saveBookingToDatabase(bookingData);
+                
+                if (saveResult.success) {
+                    // Also store in localStorage for bill.html
+                    localStorage.setItem('bookingData', JSON.stringify({
+                        ...bookingData,
+                        bookingId: saveResult.booking_id,
+                        status: 'Confirmed'
+                    }));
+                    
+                    alert(`✅ Booking Confirmed!\n\nThank you ${customerName}!\nBooking ID: ${saveResult.booking_id}\nAmount: ₹${currentBookingPackage.price.toLocaleString()}`);
+                    
+                    closeBookingForm();
+                    
+                    // Redirect to bill.html after short delay
+                    setTimeout(() => {
+                        window.location.href = 'bill.html';
+                    }, 1000);
+                    
+                } else {
+                    throw new Error(saveResult.message || 'Failed to save booking to database');
+                }
+                
+            } catch (error) {
+                alert(`Booking Error: ${error.message}`);
+            }
+        });
+
+        // Database saving function
+        async function saveBookingToDatabase(bookingData) {
+            try {
+                console.log('Sending to save_booking.php...');
+                
+                const response = await fetch('save_booking.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+                
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('JSON parse error:', parseError);
+                    throw new Error('Invalid JSON response from server');
+                }
+                
+                return result;
+                
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                return {
+                    success: false,
+                    message: 'Database error: ' + error.message
+                };
+            }
+        }
+
+        // Utility functions for validation
+        function isValidEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            try {
+                const modal = document.getElementById('bookingModal');
+                if (event.target == modal) {
+                    closeBookingForm();
+                }
+            } catch (error) {
+                console.error('Error handling modal click:', error);
+            }
+        }
+    </script>
+</body>
+</html>

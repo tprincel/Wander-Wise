@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Perfect Trip - Wander Wise</title>
+</head>
+<body style="font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    <div style="background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); max-width: 500px; width: 100%; text-align: center;">
+        <h1 style="color: #007bff; margin-bottom: 30px;">Discover Your Next Adventure with Wander Wise</h1>
+        
+        <form id="inquiryForm" onsubmit="return handleInquirySubmit(event)" style="text-align: left;">
+            <div style="margin-bottom: 20px;">
+                <label for="name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Your Name:</label>
+                <input type="text" id="name" name="name" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Your Email:</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label for="destination" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Where would you like to travel?</label>
+                <select id="destination" name="destination" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    <option value="" disabled selected>Select a state</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn" style="background-color: #28a745; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; transition: background-color 0.3s ease;">Find Packages</button>
+        </form>
+    </div>
+
+    <script>
+        async function handleInquirySubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const destination = document.getElementById('destination').value;
+            const btn = document.getElementById('submitBtn');
+
+            btn.disabled = true;
+            btn.textContent = 'Finding Packages...';
+
+            try {
+                // Post inquiry lead to backend
+                await fetch('save_inquiry.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, destination })
+                });
+            } catch (err) {
+                console.warn('Inquiry background save notice:', err);
+            }
+
+            // Redirect to dashboard with query parameters
+            const params = new URLSearchParams({
+                destination: destination,
+                name: name,
+                email: email
+            });
+            window.location.href = `dashboard.html?${params.toString()}`;
+            return false;
+        }
+    </script>
+</body>
+</html>

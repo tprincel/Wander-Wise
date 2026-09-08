@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Wander Wise - Travel</title>
+  <!-- Google Fonts: Playfair Display for titles, Inter for general text -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Custom Styling for Wander Wise Theme */
+    body {
+      font-family: 'Inter', Georgia, serif;
+      margin: 0;
+      background-color: #D6E6F2; /* Light Blue */
+      color: #1E3F66; /* Dark Blue */
+    }
+   
+    /* Top Navigation Bar */
+    .top-nav {
+      background-color: #000000; /* Dark Blue */
+      padding: 10px 20px;
+      text-align: right;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-bottom: 2px solid #FFB74D; /* Gold border line */
+      display: flex;
+      justify-content: flex-end; /* Push links to the right */
+      gap: 20px;
+    }
+    .nav-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: #F0F5F9; /* Off-White text */
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 5px 10px;
+      border-radius: 8px; /* Rounded corners for links */
+      transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    }
+    .nav-link:hover {
+      background-color: #FFB74D; /* Gold/Orange hover background */
+      color: #1E3F66; /* Dark Blue hover text */
+      transform: translateY(-1px);
+    }
+   
+    header {
+      background-color: #1E3F66; /* Dark Blue */
+      color: #F0F5F9; /* Off-White */
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+   
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; /* Increased gap for better spacing */
+    }
+   
+    .header-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 3px solid #FFB74D;
+        object-fit: cover;
+        /* Removed negative margin to ensure proper spacing with the title */
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin: 0;
+      color: #FFB74D; /* Gold/Orange Accent */
+    }
+    header h2 {
+      font-size: 1.3rem;
+      margin-top: 10px;
+      font-weight: normal;
+      color: #F0F5F9;
+    }
+    main {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .fancy-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #1E3F66;
+      line-height: 1.2;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+    .fancy-title span {
+      display: block;
+      font-size: 2rem;
+      font-weight: 400;
+      color: #6962e7; /* Purple accent */
+      margin-top: 10px;
+    }
+    .link-fancy {
+      display: inline-block;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1E3F66;
+      background-color: #FFB74D;
+      padding: 12px 30px;
+      border-radius: 12px; /* Increased rounded corner */
+      text-decoration: none;
+      transition: 0.3s;
+      font-family: 'Playfair Display', serif;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    .link-fancy:hover {
+      background-color: #FFA726;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+    }
+    /* Specific spacing adjustments */
+    .link-fancy.explore-top {
+        margin-top: 0px;
+        margin-bottom: 50px;
+    }
+    .link-fancy.plan-bottom {
+        margin-top: 40px;
+        margin-bottom: 10px;
+    }
+    /* Scroll Carousel Container (Improved scrollbar visibility) */
+    .scroll-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      margin-top: 40px;
+    }
+    .scroll-container {
+      display: flex;
+      gap: 25px;
+      overflow-x: auto; /* Enable horizontal scrolling */
+      scroll-behavior: smooth;
+      padding: 20px; /* Space for scrollbar and shadow */
+      justify-content: flex-start;
+      margin: 0 auto;
+      min-height: 240px;
+    }
+   
+    /* Scrollbar styling for all devices (made more prominent) */
+    .scroll-container::-webkit-scrollbar { height: 12px; }
+    .scroll-container::-webkit-scrollbar-thumb {
+        background: #FFB74D;
+        border-radius: 6px;
+        border: 2px solid #1E3F66;
+    }
+    .scroll-container::-webkit-scrollbar-track { background: #F0F5F9; }
+    .card {
+      position: relative;
+      width: 320px;
+      min-width: 300px;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      text-decoration: none;
+      color: inherit;
+      flex: 0 0 auto;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .card:hover img { transform: scale(1.05); }
+    .overlay {
+      position: absolute;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 26px;
+      font-weight: bold;
+      transition: bottom 0.3s ease;
+      padding: 10px;
+      text-align: center;
+    }
+    .card:hover .overlay { bottom: 0; }
+   
+    /* New style to highlight the unique sequential number */
+    .place-number {
+        font-size: 1.5em; /* Make the number huge */
+        color: #FFB74D; /* Gold color for the number */
+        display: block;
+        margin-bottom: 5px;
+    }
+    .overlay small { font-size: 16px; font-weight: normal; color: #F0F5F9; }
+    /* Scroll Button Styles */
+    .scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #1E3F66;
+      color: #FFB74D;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 50%;
+      opacity: 0.9;
+      transition: 0.3s;
+      z-index: 10;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .scroll-btn:hover { background: #112d4d; color: #fff; }
+    .scroll-btn.left { left: 10px; }
+    .scroll-btn.right { right: 10px; }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+<nav class="top-nav">
+    <a href="index.html" class="nav-link">HOME</a>
+    <a href="planmytrip.html" class="nav-link">PLAN TRIP</a>
+    <a href="login.html" class="nav-link">LOGIN</a>
+</nav>
+  <header>
+    <div class="header-content">
+        <!-- Logo Element - Placeholder for an image named Screenshot (221).png in the images folder -->
+        <img src="images/Screenshot%20(221).png" alt="Wander Wise Logo" class="header-logo" onerror="this.src='https://placehold.co/60x60/FFB74D/1E3F66?text=WW'">
+        <h1>WANDER WISE</h1>
+    </div>
+    <h2>Plan your trip, Relax your mind, Seek adventure and Prosper in memories.</h2>
+  </header>
+  <main>
+   
+    <!-- Explore Button (top) -->
+    <a href="Explorethelandofwonders.html" class="link-fancy explore-top">Explore the Land of Wonders</a>
+    <h1 class="fancy-title">ATTRACTIONS <span>worth a thousand stories</span></h1>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left" onclick="scrollLeft()">&#10094;</button>
+      <div class="scroll-container" id="carousel">
+        <!-- Helper function for placeholder images: generates a URL with the place name and number. -->
+        <script>
+            function ph(num, name) {
+                const text = encodeURIComponent(`${name}`.replace(/ /g, '+'));
+                // Use a default background color for the placeholder
+                return `https://placehold.co/320x200/1E3F66/FFB74D?text=${text}`;
+            }
+        </script>
+       
+        <!-- ---- STATIC LIST OF ALL 29 ATTRACTIONS ---- -->
+       
+        <!-- 1 The Golden Temple (Original #1) -->
+        <a href="places/The%20Golden%20Temple.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.14.jpeg" alt="The Golden Temple" onerror="this.src=ph(1, 'The Golden Temple');">
+          <div class="overlay" data-name="The Golden Temple" data-num="1"></div>
+        </a>
+        <!-- 2 Shanti Stupa (Original #2) -->
+      
+        <!-- 3 Tulip Garden (Original #3) -->
+        <a href="places/Tulip%20Garden.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.17.jpeg" alt="Tulip Garden" onerror="this.src=ph(3, 'Tulip Garden');">
+          <div class="overlay" data-name="Tulip Garden" data-num="3"></div>
+        </a>
+       
+        <!-- 4 Sri Jagannath Temple (Original #6) -->
+        
+        <!-- 5 Chidiya Tapu (Original #7) -->
+        <a href="places/Chidiya%20Tapu.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.22%20(1).jpeg" alt="Chidiya Tapu" onerror="this.src=ph(5, 'Chidiya Tapu');">
+          <div class="overlay" data-name="Chidiya Tapu" data-num="5"></div>
+        </a>
+        <!-- 6 Victoria Memorial (Original #8) -->
+        <a href="places/Victoria%20Memorial.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.22%20(2).jpeg" alt="Victoria Memorial" onerror="this.src=ph(6, 'Victoria Memorial');">
+          <div class="overlay" data-name="Victoria Memorial" data-num="6"></div>
+        </a>
+        <!-- 7 Mahabodhi Temple (Original #9) -->
+        <a href="places/Mahabodhi%20Temple.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.23.jpeg" alt="Mahabodhi Temple" onerror="this.src=ph(7, 'Mahabodhi Temple');">
+          <div class="overlay" data-name="Mahabodhi Temple" data-num="7"></div>
+        </a>
+        <!-- 8 Anjuna Beach (Original #10) -->
+        <a href="places/Anjuna%20Beach.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.23%20(1).jpeg" alt="Anjuna Beach" onerror="this.src=ph(8, 'Anjuna Beach');">
+          <div class="overlay" data-name="Anjuna Beach" data-num="8"></div>
+        </a>
+       
+        <!-- 9 The Gateway of India (Original #11) -->
+        
+       
+        <!-- 10 Naida Caves (Original #12) -->
+        <a href="places/Naida%20Caves.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.24%20(1).jpeg" alt="Naida Caves" onerror="this.src=ph(10, 'Naida Caves');">
+          <div class="overlay" data-name="Naida Caves" data-num="10"></div>
+        </a>
+       
+        <!-- 11 Dwarkadhish temple (Original #13) -->
+        <a href="places/Dwarkadhish%20temple.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.25.jpeg" alt="Dwarkadhish temple" onerror="this.src=ph(11, 'Dwarkadhish temple');">
+          <div class="overlay" data-name="Dwarkadhish temple" data-num="11"></div>
+        </a>
+        <!-- 12 Sanchi Stupa (Original #14) -->
+        <a href="places/Sanchi%20Stupa.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.25%20(1).jpeg" alt="Sanchi Stupa" onerror="this.src=ph(12, 'Sanchi Stupa');">
+          <div class="overlay" data-name="Sanchi Stupa" data-num="12"></div>
+        </a>
+        <!-- 13 Swami Vivekanand sarovar (Original #15) -->
+        <a href="places/Swami%20Vivekanand%20sarovar.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.25%20(2).jpeg" alt="Swami Vivekanand sarovar" onerror="this.src=ph(13, 'Swami Vivekanand sarovar');">
+          <div class="overlay" data-name="Swami Vivekanand sarovar" data-num="13"></div>
+        </a>
+        <!-- 14 Netarahat Dam (Original #16) -->
+        <a href="places/Netarahat%20Dam.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.18.26.jpeg" alt="Netarahat Dam" onerror="this.src=ph(14, 'Netarahat Dam');">
+          <div class="overlay" data-name="Netarahat Dam" data-num="14"></div>
+        </a>
+        <!-- 15 Virupaksha temple (Original #17) -->
+        <a href="places/Virupaksha%20temple.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.42.jpeg" alt="Virupaksha temple" onerror="this.src=ph(15, 'Virupaksha temple');">
+          <div class="overlay" data-name="Virupaksha temple" data-num="15"></div>
+        </a>
+        <!-- 16 Bangaram (Original #18) -->
+        <a href="places/Bangaram.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.42%20(1).jpeg" alt="Bangaram" onerror="this.src=ph(16, 'Bangaram');">
+          <div class="overlay" data-name="Bangaram" data-num="16"></div>
+        </a>
+        <!-- 17 Shore temple (Original #19) -->
+        <a href="places/Shore%20temple.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.42%20(2).jpeg" alt="Shore temple" onerror="this.src=ph(17, 'Shore temple');">
+          <div class="overlay" data-name="Shore temple" data-num="17"></div>
+        </a>
+        <!-- 18 Nohsngithiang falls (Original #20) -->
+        <a href="places/Nohsngithiang%20falls.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.43.jpeg" alt="Nohsngithiang falls" onerror="this.src=ph(18, 'Nohsngithiang falls');">
+          <div class="overlay" data-name="Nohsngithiang falls" data-num="18"></div>
+        </a>
+        <!-- 19 Tsomgo lake (Original #21) -->
+        <a href="places/Tsomgo%20lake.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.43%20(1).jpeg" alt="Tsomgo lake" onerror="this.src=ph(19, 'Tsomgo lake');">
+          <div class="overlay" data-name="Tsomgo lake" data-num="19"></div>
+        </a>
+        <!-- 20 Dzukou valley (Original #22) -->
+        <a href="places/Dzukou%20valley.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.44.jpeg" alt="Dzukou valley" onerror="this.src=ph(20, 'Dzukou valley');">
+          <div class="overlay" data-name="Dzukou valley" data-num="20"></div>
+        </a>
+        <!-- 21 Khawnglung wildlife sanctuary (Original #23) -->
+        <a href="places/Khawnglung%20wildlife%20sanctuary.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.44%20(1).jpeg" alt="Khawnglung wildlife sanctuary" onerror="this.src=ph(21, 'Khawnglung wildlife sanctuary');">
+          <div class="overlay" data-name="Khawnglung wildlife sanctuary" data-num="21"></div>
+        </a>
+        <!-- 22 Red fort (Original #24) -->
+        <a href="places/Red%20fort.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.45.jpeg" alt="Red fort" onerror="this.src=ph(22, 'Red fort');">
+          <div class="overlay" data-name="Red fort" data-num="22"></div>
+        </a>
+        <!-- 23 Pratapgad fort (Original #25) -->
+        <a href="places/Pratapgad%20fort.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.45%20(1).jpeg" alt="Pratapgad fort" onerror="this.src=ph(23, 'Pratapgad fort');">
+          <div class="overlay" data-name="Pratapgad fort" data-num="23"></div>
+        </a>
+        <!-- 24 Ajanta caves (Original #26) -->
+        <a href="places/Ajanta%20caves.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.46.jpeg" alt="Ajanta caves" onerror="this.src=ph(24, 'Ajanta caves');">
+          <div class="overlay" data-name="Ajanta caves" data-num="24"></div>
+        </a>
+        <!-- 25 Ayodhya (Original #27) -->
+        <a href="places/Ayodhya.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.46%20(1).jpeg" alt="Ayodhya" onerror="this.src=ph(25, 'Ayodhya');">
+          <div class="overlay" data-name="Ayodhya" data-num="25"></div>
+        </a>
+        <!-- 26 Mathura (Original #28) -->
+        <a href="places/Mathura.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.46%20(2).jpeg" alt="Mathura" onerror="this.src=ph(26, 'Mathura');">
+          <div class="overlay" data-name="Mathura" data-num="26"></div>
+        </a>
+        <!-- 27 Jhansi Fort (Original #29) -->
+        <a href="places/Jhansi%20Fort.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.47.jpeg" alt="Jhansi Fort" onerror="this.src=ph(27, 'Jhansi Fort');">
+          <div class="overlay" data-name="Jhansi Fort" data-num="27"></div>
+        </a>
+        <!-- 28 Varanasi (Original #30) -->
+        <a href="places/Varanasi.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.47%20(1).jpeg" alt="Varanasi" onerror="this.src=ph(28, 'Varanasi');">
+          <div class="overlay" data-name="Varanasi" data-num="28"></div>
+        </a>
+        <!-- 29 Lucknow (Original #31) -->
+        <a href="places/Lucknow.html" class="card">
+          <img src="images/WhatsApp Image 2025-09-18 at 22.21.48.jpeg" alt="Lucknow" onerror="this.src=ph(29, 'Lucknow');">
+          <div class="overlay" data-name="Lucknow" data-num="29"></div>
+        </a>
+      </div> <!-- scroll-container ends -->
+      <button class="scroll-btn right" onclick="scrollRight()">&#10095;</button>
+    </div> <!-- scroll-wrapper ends -->
+   
+    <!-- Plan My Trip Button (bottom) -->
+    <a href="planmytrip.html" class="link-fancy plan-bottom">Plan My Trip</a>
+  </main>
+  <script>
+    const container = document.getElementById('carousel');
+   
+    // Fill the overlay text using data attributes after the content loads
+    document.querySelectorAll('.overlay').forEach(overlayElement => {
+        const name = overlayElement.getAttribute('data-name');
+        overlayElement.innerHTML = `${name}<small>Click to Explore</small>`;
+    });
+
+    // Card unit width (320px card + 25px gap) = 345px
+    const CARD_UNIT_WIDTH = 345;
+    // Scroll jump amount (5 cards) for easier navigation.
+    const SCROLL_JUMP_AMOUNT = CARD_UNIT_WIDTH * 5;
+
+    function scrollLeft() {
+      // Use the large jump amount for easier navigation
+      container.scrollBy({ left: -SCROLL_JUMP_AMOUNT, behavior: 'smooth' });
+    }
+
+    function scrollRight() {
+      // Use the large jump amount for easier navigation
+      container.scrollBy({ left: SCROLL_JUMP_AMOUNT, behavior: 'smooth' });
+    }
+
+    // Display user profile in top-nav if logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (user && user.username) {
+          const nav = document.querySelector('.top-nav');
+          const loginLink = nav ? nav.querySelector('a[href="login.html"]') : null;
+          if (loginLink) {
+            loginLink.textContent = `👤 ${user.username}`;
+            loginLink.href = 'dashboard.html';
+          }
+        }
+      } catch (e) {
+        console.warn('User status notice:', e);
+      }
+    });
+  </script>
+</body>
+</html>

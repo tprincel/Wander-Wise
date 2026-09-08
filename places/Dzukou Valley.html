@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dzukou Valley - Wander Wise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(30, 63, 102, 0.6), rgba(30, 63, 102, 0.7)),
+                        url('../images/WhatsApp Image 2025-09-18 at 22.21.44.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #F0F5F9;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #FFB74D;
+            color: #1E3F66;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .back-button:hover {
+            background: #FFA726;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #FFB74D;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #FFB74D;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #FFB74D;
+            padding-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-item {
+            background: rgba(30, 63, 102, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFB74D;
+        }
+        
+        .info-item h3 {
+            color: #FFB74D;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-item p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .bullet-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .bullet-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .bullet-list li:before {
+            content: "•";
+            color: #FFB74D;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .highlight {
+            color: #FFB74D;
+            font-weight: 600;
+        }
+        
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 20px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+        
+        <h1>DZUKOU VALLEY</h1>
+        
+        <div class="content-card">
+            <!-- Basic Information Section -->
+            <div class="info-section">
+                <h2>Basic Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h3>Location</h3>
+                        <p>Nagaland-Manipur Border, Northeast India</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Known For</h3>
+                        <p>Lush greenery, seasonal flowers, trekking</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Experience</h3>
+                        <p>Peaceful seclusion and natural beauty</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Description Section -->
+            <div class="info-section">
+                <h2>About Dzukou Valley</h2>
+                <div class="description-text">
+                    <p>Dzukou Valley is an ideal getaway for those seeking peace and seclusion. The valley's breathtaking natural beauty, diverse flora and fauna, and cultural richness make it an unforgettable destination that offers a perfect escape from urban life.</p>
+                    
+                    <p>Known for its serene atmosphere and lush landscapes, the valley provides a range of accommodation options and activities that cater to all ages and interests. A visit to Dzukou Valley is an excellent way to reconnect with nature, explore the rich culture of the region, and make memories that will last a lifetime.</p>
+                    
+                    <p>The valley's pristine environment and tranquil ambiance create the perfect setting for those looking to immerse themselves in nature's embrace and find solace in the mountains.</p>
+                </div>
+            </div>
+            
+            <!-- Trekking & Adventure Section -->
+            <div class="info-section">
+                <h2>Trekking & Adventure</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Challenging trek</span> with steep inclines and rocky terrain</li>
+                    <li><span class="highlight">Rock climbing opportunities</span> for adventure enthusiasts</li>
+                    <li><span class="highlight">Picturesque landscapes</span> throughout the journey</li>
+                    <li><span class="highlight">Spectacular mountain views</span> rewarding the effort</li>
+                    <li><span class="highlight">Well-marked trails</span> through diverse terrain</li>
+                </ul>
+            </div>
+            
+            <!-- Natural Features Section -->
+            <div class="info-section">
+                <h2>Natural Features</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Lush green meadows</span> stretching across the valley</li>
+                    <li><span class="highlight">Seasonal flower carpets</span> including rare Dzukou lily</li>
+                    <li><span class="highlight">Diverse flora and fauna</span> in pristine ecosystem</li>
+                    <li><span class="highlight">Crystal-clear streams</span> flowing through the valley</li>
+                    <li><span class="highlight">Rolling hills</span> creating scenic vistas</li>
+                </ul>
+            </div>
+            
+            <!-- Wildlife & Bird Watching Section -->
+            <div class="info-section">
+                <h2>Wildlife & Bird Watching</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Bird watching paradise</span> with diverse avian species</li>
+                    <li><span class="highlight">Rich biodiversity</span> including rare and endemic species</li>
+                    <li><span class="highlight">Butterfly sightings</span> during flowering seasons</li>
+                    <li><span class="highlight">Wildlife photography</span> opportunities in natural habitat</li>
+                    <li><span class="highlight">Nature observation</span> in undisturbed environment</li>
+                </ul>
+            </div>
+            
+            <!-- Visitor Experience Section -->
+            <div class="info-section">
+                <h2>Visitor Experience</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Peaceful retreat</span> away from crowded tourist spots</li>
+                    <li><span class="highlight">Cultural immersion</span> with local Naga traditions</li>
+                    <li><span class="highlight">Camping under stars</span> in pristine environment</li>
+                    <li><span class="highlight">Photography expeditions</span> capturing natural beauty</li>
+                    <li><span class="highlight">Seasonal variations</span> offering different experiences</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanchi Stupa - Wander Wise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(30, 63, 102, 0.6), rgba(30, 63, 102, 0.7)),
+                        url('../images/WhatsApp Image 2025-09-18 at 22.18.25 (1).jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #F0F5F9;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #FFB74D;
+            color: #1E3F66;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .back-button:hover {
+            background: #FFA726;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #FFB74D;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #FFB74D;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #FFB74D;
+            padding-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-item {
+            background: rgba(30, 63, 102, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFB74D;
+        }
+        
+        .info-item h3 {
+            color: #FFB74D;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-item p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .bullet-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .bullet-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .bullet-list li:before {
+            content: "•";
+            color: #FFB74D;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .highlight {
+            color: #FFB74D;
+            font-weight: 600;
+        }
+        
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-card {
+                padding: 20px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+        
+        <h1>SANCHI STUPA</h1>
+        
+        <div class="content-card">
+            <!-- Basic Information Section -->
+            <div class="info-section">
+                <h2>Basic Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h3>Location</h3>
+                        <p>Sanchi, Madhya Pradesh, India</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Founded</h3>
+                        <p>3rd Century BCE by Emperor Ashoka</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>UNESCO Status</h3>
+                        <p>World Heritage Site since 1989</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Description Section -->
+            <div class="info-section">
+                <h2>About Sanchi Stupa</h2>
+                <div class="description-text">
+                    <p>The Sanchi Stupa is a historic Buddhist complex in Madhya Pradesh, India, commissioned by the Mauryan Emperor Ashoka in the 3rd century BCE to house relics of the Buddha and his followers. Considered one of the oldest stone structures in India, it is a UNESCO World Heritage Site famous for its Great Stupa.</p>
+                    
+                    <p>The complex features intricate gateways (toranas) and a surrounding stone fence (vedika) that narrate Jataka tales and Buddhist life. The complex has undergone several additions and restorations over the centuries, making it a significant example of early Buddhist art and architecture.</p>
+                    
+                    <p>Sanchi represents one of the most important Buddhist sites in India, showcasing the evolution of Buddhist architecture and art over several centuries.</p>
+                </div>
+            </div>
+            
+            <!-- Architectural Features Section -->
+            <div class="info-section">
+                <h2>Architectural Features</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Great Stupa (Stupa 1)</span> - the main hemispherical dome structure</li>
+                    <li><span class="highlight">Four ornate gateways (Toranas)</span> facing cardinal directions</li>
+                    <li><span class="highlight">Stone fence (Vedika)</span> surrounding the main stupa</li>
+                    <li><span class="highlight">Harmika</span> - square railing atop the dome</li>
+                    <li><span class="highlight">Chatra</span> - three-tiered umbrella symbolizing enlightenment</li>
+                </ul>
+            </div>
+            
+            <!-- Historical Significance Section -->
+            <div class="info-section">
+                <h2>Historical Significance</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Commissioned by Emperor Ashoka</span> in 3rd century BCE</li>
+                    <li><span class="highlight">Houses relics</span> of Buddha and his disciples</li>
+                    <li><span class="highlight">One of oldest stone structures</span> in India</li>
+                    <li><span class="highlight">Multiple expansions</span> under Shunga and Satavahana dynasties</li>
+                    <li><span class="highlight">Rediscovered in 1818</span> by British officer General Taylor</li>
+                </ul>
+            </div>
+            
+            <!-- Artistic & Cultural Significance Section -->
+            <div class="info-section">
+                <h2>Artistic & Cultural Significance</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Intricate carvings</span> depicting Jataka tales and Buddha's life</li>
+                    <li><span class="highlight">Early Buddhist art</span> without human representations of Buddha</li>
+                    <li><span class="highlight">Symbolic representations</span> using footprints, throne, and Bodhi tree</li>
+                    <li><span class="highlight">Influence on Buddhist architecture</span> across Asia</li>
+                    <li><span class="highlight">Restoration work</span> by Sir John Marshall in 20th century</li>
+                </ul>
+            </div>
+            
+            <!-- Visitor Information Section -->
+            <div class="info-section">
+                <h2>Visitor Information</h2>
+                <ul class="bullet-list">
+                    <li><span class="highlight">Best time to visit:</span> October to March</li>
+                    <li><span class="highlight">Nearby city:</span> Bhopal (46 km away)</li>
+                    <li><span class="highlight">Archaeological Museum</span> on site with artifacts</li>
+                    <li><span class="highlight">Other structures:</span> Multiple stupas, temples, and monasteries</li>
+                    <li><span class="highlight">Significance:</span> Major Buddhist pilgrimage and study site</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
