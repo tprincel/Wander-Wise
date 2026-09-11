@@ -1,3 +1,4 @@
 chore: initialize project workspace and .gitignore - 2026-09-08T10:15:00
 docs: draft core project scope and feature list - 2026-09-08T15:30:00
 feat(structure): establish assets, css, and js folders - 2026-09-11T11:20:00
+feat(html): build base semantic document structure - 2026-09-11T16:45:00
