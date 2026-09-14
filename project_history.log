@@ -3,3 +3,4 @@ docs: draft core project scope and feature list - 2026-09-08T15:30:00
 feat(structure): establish assets, css, and js folders - 2026-09-11T11:20:00
 feat(html): build base semantic document structure - 2026-09-11T16:45:00
 feat(nav): scaffold responsive navigation bar - 2026-09-14T10:10:00
+style(nav): apply Wander Wise navy blue palette - 2026-09-14T14:25:00
