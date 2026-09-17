@@ -5,3 +5,4 @@ feat(html): build base semantic document structure - 2026-09-11T16:45:00
 feat(nav): scaffold responsive navigation bar - 2026-09-14T10:10:00
 style(nav): apply Wander Wise navy blue palette - 2026-09-14T14:25:00
 feat(hero): construct hero banner and tagline - 2026-09-17T13:00:00
+style(hero): style call-to-action buttons with gold accents - 2026-09-17T17:40:00
