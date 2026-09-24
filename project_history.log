@@ -8,3 +8,4 @@ feat(hero): construct hero banner and tagline - 2026-09-17T13:00:00
 style(hero): style call-to-action buttons with gold accents - 2026-09-17T17:40:00
 feat(cards): layout tour destination card grid - 2026-09-21T12:15:00
 style(cards): add smooth hover elevation and transitions - 2026-09-21T16:50:00
+feat(search): add destination keyword search input - 2026-09-24T14:30:00
