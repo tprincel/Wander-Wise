@@ -12,3 +12,4 @@ feat(search): add destination keyword search input - 2026-09-24T14:30:00
 feat(filter): implement travel category selection pills - 2026-09-24T18:05:00
 feat(js): write dynamic DOM filter handlers - 2026-09-28T11:20:00
 perf(assets): compress and optimize destination images - 2026-09-28T15:40:00
+feat(modal): structure booking inquiry modal window - 2026-10-01T10:10:00
