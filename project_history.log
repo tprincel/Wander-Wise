@@ -15,3 +15,4 @@ perf(assets): compress and optimize destination images - 2026-09-28T15:40:00
 feat(modal): structure booking inquiry modal window - 2026-10-01T10:10:00
 style(modal): style backdrop blur and entrance animations - 2026-10-01T14:00:00
 feat(form): create booking form input validation - 2026-10-03T11:45:00
+feat(validation): implement email and phone regex checks - 2026-10-03T16:30:00
