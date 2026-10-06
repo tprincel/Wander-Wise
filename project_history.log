@@ -16,3 +16,4 @@ feat(modal): structure booking inquiry modal window - 2026-10-01T10:10:00
 style(modal): style backdrop blur and entrance animations - 2026-10-01T14:00:00
 feat(form): create booking form input validation - 2026-10-03T11:45:00
 feat(validation): implement email and phone regex checks - 2026-10-03T16:30:00
+feat(footer): scaffold footer layout with quick links - 2026-10-06T13:10:00
