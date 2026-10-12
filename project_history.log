@@ -20,3 +20,4 @@ feat(footer): scaffold footer layout with quick links - 2026-10-06T13:10:00
 style(footer): finalize responsive footer styling - 2026-10-06T17:20:00
 feat(backend): configure backend directory and routes - 2026-10-08T12:00:00
 feat(db): write schema.sql for users and bookings - 2026-10-08T15:30:00
+feat(db): establish PDO MySQL database connection - 2026-10-12T14:10:00
