@@ -29,3 +29,4 @@ feat(auth): write password hashing and authentication - 2026-10-17T18:35:00
 feat(session): add secure PHP session management - 2026-10-19T12:20:00
 fix(css): fix mobile viewport overflow on hero banner - 2026-10-19T16:15:00
 fix(nav): add mobile hamburger navigation toggle - 2026-10-21T10:40:00
+fix(form): correct date picker constraints and ranges - 2026-10-21T14:00:00
