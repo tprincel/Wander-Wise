@@ -18,7 +18,7 @@ Wander Wise is a full-featured travel exploration and tour booking web applicati
 
 ## Project Structure
 
-```
+```text
 wanderwise/
 ├── index.html                   # Main landing page & attractions showcase
 ├── dashboard.html               # Tour packages catalog, filters & booking modal
@@ -27,11 +27,18 @@ wanderwise/
 ├── planmytrip.html              # Trip planning entry point
 ├── form.html                    # Trip discovery & search inquiry form
 ├── bill.html                    # Booking confirmation invoice
-├── db.php                       # Database connection configuration (PDO & MySQLi)
-├── packages.php                 # RESTful API endpoint for package listings
-├── save_booking.php             # POST endpoint for booking submissions
-├── auth_login.php               # POST endpoint for user authentication
-├── save_inquiry.php             # POST endpoint for trip search leads
+├── config/
+│   └── db.php                   # Database connection configuration (PDO)
+├── api/
+│   ├── get_places.php           # Fetch destinations with category/search filters
+│   ├── book_place.php           # Booking & payment transaction endpoint
+│   ├── auth.php                 # User registration, login & session handling
+│   └── contact.php              # Inquiries & message submissions
+├── db.php                       # Database connection configuration forwarder
+├── packages.php                 # RESTful API endpoint forwarder
+├── save_booking.php             # Booking submission forwarder
+├── auth_login.php               # User authentication forwarder
+├── save_inquiry.php             # Trip search leads forwarder
 ├── schema.sql                   # MySQL database schema & seed data
 ├── images/                      # Destination photographs & logos
 └── places/                      # 62 Individual destination guide pages
@@ -42,36 +49,45 @@ wanderwise/
 ## Local Setup with XAMPP
 
 ### 1. Database Setup
+
 1. Open the **XAMPP Control Panel** and start **Apache** and **MySQL**.
 2. Open your browser and go to: `http://localhost/phpmyadmin`
 3. Click the **Import** tab.
 4. Select `schema.sql` from this repository and click **Import**.
-5. This creates the database `wanderwise_db` with all necessary tables (`users`, `packages`, `bookings`, `inquiries`) and seeds default tour packages.
+5. This creates the database `wanderwise_db` with all necessary tables (`users`, `places`, `bookings`, `payments`, `inquiries`) and seeds default tour packages.
 
 ### 2. Deploy to XAMPP
+
 Copy the project folder to your XAMPP web root:
-```
+
+```text
 C:\xampp\htdocs\wanderwise
 ```
 
-### 3. Open in Browser
-Visit the project directly at:
-```
-http://localhost/wanderwise/
-```
+---
+
+## Local Access Links
+
+- **Frontend / Website:** [http://localhost/wanderwise/](http://localhost/wanderwise/)
+- **Backend / Database (phpMyAdmin):** [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
 
 ---
 
 ## Backend API Endpoints
 
 | Endpoint | Method | Description |
-|----------|--------|-------------|
-| `packages.php` | `GET` | Returns tour packages with optional `state` and `category` filters |
-| `save_booking.php` | `POST` | Validates and inserts tour bookings into `wanderwise_db.bookings` |
-| `auth_login.php` | `POST` | Authenticates existing user or registers new user in `wanderwise_db.users` |
-| `save_inquiry.php` | `POST` | Records travel inquiry leads into `wanderwise_db.inquiries` |
+| --- | --- | --- |
+| `api/get_places.php` | `GET` | Fetches destinations with optional `category`, `state`, `search`, and `duration` filters |
+| `api/book_place.php` | `POST` | Validates, creates user if needed, and records in `bookings` and `payments` |
+| `api/auth.php` | `POST` / `GET` | User registration and login using `password_verify` with session tracking |
+| `api/contact.php` | `POST` | Records user messages and inquiries into `inquiries` table |
+| `packages.php` | `GET` | Legacy backward-compatible forwarder to `api/get_places.php` |
+| `save_booking.php` | `POST` | Legacy backward-compatible forwarder to `api/book_place.php` |
+| `auth_login.php` | `POST` | Legacy backward-compatible forwarder to `api/auth.php` |
+| `save_inquiry.php` | `POST` | Legacy backward-compatible forwarder to `api/contact.php` |
 
 ---
 
 ## License
+
 MIT License.
