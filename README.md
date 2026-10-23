@@ -66,10 +66,11 @@ C:\xampp\htdocs\wanderwise
 
 ---
 
-## Local Access Links
+## Project Links
 
-- **Frontend / Website:** [http://localhost/wanderwise/](http://localhost/wanderwise/)
-- **Backend / Database (phpMyAdmin):** [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
+- **Live Demo (SnapDeploy):** [https://wander-wise-036c8.containers.snapdeploy.app](https://wander-wise-036c8.containers.snapdeploy.app)
+- **Local Frontend / Website:** [http://localhost/wanderwise/](http://localhost/wanderwise/)
+- **Local Backend / Database (phpMyAdmin):** [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/)
 
 ---
 
