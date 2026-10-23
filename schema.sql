@@ -10,79 +10,94 @@ COLLATE utf8mb4_unicode_ci;
 
 USE `wanderwise_db`;
 
--- -------------------------------------------------------
--- Table 1: Users (for user authentication / login)
--- -------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `users` (
+DROP TABLE IF EXISTS `reviews`;
+DROP TABLE IF EXISTS `payments`;
+DROP TABLE IF EXISTS `bookings`;
+DROP TABLE IF EXISTS `places`;
+DROP TABLE IF EXISTS `inquiries`;
+DROP TABLE IF EXISTS `users`;
+
+-- 1. Users Table (Customer & Admin Accounts)
+CREATE TABLE `users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `username` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
     `email` VARCHAR(150) NOT NULL UNIQUE,
-    `phone` VARCHAR(20) NOT NULL,
+    `password_hash` VARCHAR(255) NOT NULL,
+    `phone` VARCHAR(20),
+    `role` ENUM('customer', 'admin') DEFAULT 'customer',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------------------------------------------
--- Table 2: Packages (available tours displayed in Dashboard)
--- -------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `packages` (
+-- 2. Places / Tour Destinations
+CREATE TABLE `places` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `destination` VARCHAR(200) NOT NULL,
-    `duration` INT NOT NULL COMMENT 'Duration in days',
-    `price` DECIMAL(10,2) NOT NULL COMMENT 'Price per person in INR',
-    `category` VARCHAR(50) NOT NULL COMMENT 'cultural, adventure, wildlife, beach, religious',
-    `state` VARCHAR(50) NOT NULL,
+    `title` VARCHAR(150) NOT NULL,
+    `state_region` VARCHAR(100) NOT NULL,
+    `category` ENUM('Adventure', 'Heritage', 'Beach', 'Hill Station', 'Spiritual') NOT NULL,
+    `price_per_person` DECIMAL(10, 2) NOT NULL,
+    `duration_days` INT NOT NULL,
+    `image_url` VARCHAR(255),
     `description` TEXT,
-    `image_url` VARCHAR(255) DEFAULT NULL,
+    `is_featured` BOOLEAN DEFAULT FALSE,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------------------------------------------
--- Table 3: Bookings (records of confirmed tour bookings)
--- -------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bookings` (
+-- 3. Bookings (Who booked which place, passenger count, travel dates)
+CREATE TABLE `bookings` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `booking_reference` VARCHAR(50) NOT NULL UNIQUE,
-    `customer_name` VARCHAR(100) NOT NULL,
-    `customer_email` VARCHAR(150) NOT NULL,
-    `customer_phone` VARCHAR(20) NOT NULL,
+    `user_id` INT NOT NULL,
+    `place_id` INT NOT NULL,
+    `booking_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `travel_date` DATE NOT NULL,
-    `people_count` VARCHAR(10) NOT NULL,
-    `package_name` VARCHAR(200) NOT NULL,
-    `destination` VARCHAR(200) NOT NULL,
-    `duration` VARCHAR(50) NOT NULL,
-    `total_amount` DECIMAL(10,2) NOT NULL,
-    `package_type` VARCHAR(50) NOT NULL COMMENT 'fixed or custom',
-    `booking_status` VARCHAR(50) DEFAULT 'Confirmed',
-    `booking_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `number_of_guests` INT NOT NULL DEFAULT 1,
+    `total_amount` DECIMAL(10, 2) NOT NULL,
+    `booking_status` ENUM('Pending', 'Confirmed', 'Cancelled', 'Completed') DEFAULT 'Pending',
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`place_id`) REFERENCES `places`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------------------------------------------
--- Table 4: Inquiries (search leads submitted via form.html)
--- -------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `inquiries` (
+-- 4. Payments Table
+CREATE TABLE `payments` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `booking_id` INT NOT NULL,
+    `transaction_id` VARCHAR(100) UNIQUE,
+    `payment_method` ENUM('Card', 'UPI', 'NetBanking', 'Cash') DEFAULT 'UPI',
+    `amount_paid` DECIMAL(10, 2) NOT NULL,
+    `payment_status` ENUM('Pending', 'Success', 'Failed', 'Refunded') DEFAULT 'Pending',
+    `payment_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`booking_id`) REFERENCES `bookings`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. User Inquiries / Contact Form
+CREATE TABLE `inquiries` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL,
     `email` VARCHAR(150) NOT NULL,
-    `destination_state` VARCHAR(100) NOT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `subject` VARCHAR(200),
+    `message` TEXT NOT NULL,
+    `status` ENUM('Unread', 'Responded') DEFAULT 'Unread',
+    `submitted_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------------------------------------------
--- Seed Data: Packages for Wander Wise
--- -------------------------------------------------------
-INSERT INTO `packages` (`name`, `destination`, `duration`, `price`, `category`, `state`, `description`) VALUES
-('Golden Triangle Explorer', 'Delhi, Agra, Jaipur', 7, 25000.00, 'cultural', 'Rajasthan', 'Discover northern India heritage: Red Fort in Delhi, Taj Mahal in Agra, and Amber Fort & Hawa Mahal in Jaipur.'),
-('Royal Rajasthan Heritage Tour', 'Jaipur, Jodhpur, Udaipur', 8, 32000.00, 'cultural', 'Rajasthan', 'Immerse yourself in royal palaces, desert bastions, and the serene lakes of Udaipur.'),
-('Kerala Backwaters & Tea Hills', 'Munnar, Alleppey, Kochi', 5, 18500.00, 'wildlife', 'Kerala', 'Cruise the palm-fringed backwaters on a traditional houseboat and trek the tea garden hills of Munnar.'),
-('Wayanad & Periyar Nature Expedition', 'Wayanad, Thekkady', 4, 14000.00, 'adventure', 'Kerala', 'Bamboo rafting, spice plantation trails, and wildlife safaris in Periyar National Park.'),
-('Himachal Snow Valley Tour', 'Shimla, Kullu, Manali', 6, 22000.00, 'adventure', 'Himachal Pradesh', 'Experience majestic snow-covered peaks, Solang Valley sports, and high-altitude Himalayan beauty.'),
-('Spiti Valley High Altitude Safari', 'Kaza, Tabo, Chandratal', 9, 36000.00, 'adventure', 'Himachal Pradesh', 'Rugged Himalayan terrain, ancient cliffside monasteries, and pristine turquoise mountain lakes.'),
-('Goa Coastal Sunshine & Heritage', 'Calangute, Anjuna, Panaji, Old Goa', 4, 15000.00, 'beach', 'Goa', 'Golden sand beaches, historic Portuguese churches, vibrant night bazaars, and water adventures.'),
-('Goa Backwater & Island Kayaking', 'Divar Island, Palolem', 3, 11500.00, 'beach', 'Goa', 'Unexplored tranquil backwaters, dolphin spotting cruises, and quiet sunset shores.'),
-('Spiritual Ganga & Sacred Ghats', 'Varanasi, Sarnath, Ayodhya', 5, 16000.00, 'religious', 'Uttar Pradesh', 'Witness the evening Ganga Aarti, explore ancient Sarnath stupas, and visit the temple city of Ayodhya.'),
-('Tirupati & Tamil Temple Trail', 'Madurai, Rameswaram, Kanchipuram', 6, 21000.00, 'religious', 'Tamil Nadu', 'Magnificent Dravidian architecture, sacred shore temples, and timeless cultural traditions.'),
-('Bandhavgarh & Kanha Tiger Safari', 'Kanha, Bandhavgarh', 5, 27000.00, 'wildlife', 'Madhya Pradesh', 'Premier tiger reserves of central India featuring dense sal forests and guided jeep safaris.'),
-('Maharashtra Forts & Caves Journey', 'Ajanta, Ellora, Aurangabad, Raigad', 5, 17500.00, 'cultural', 'Maharashtra', 'UNESCO World Heritage rock-cut caves of Ajanta & Ellora alongside historic Maratha hill forts.'),
-('Uttarakhand Alpine Trek', 'Rishikesh, Haridwar, Mussoorie', 5, 16500.00, 'adventure', 'Uttarakhand', 'White water rafting on the Ganges, yoga retreats, and cool mountain retreats in the Garhwal hills.'),
-('Darjeeling & Dooars Explorer', 'Darjeeling, Kalimpong, Dooars', 6, 23000.00, 'cultural', 'West Bengal', 'Toy train rides, sweeping views of Mount Kanchenjunga, and lush Dooars tea plantations.');
+-- 6. Seed Data (Realistic destinations & sample records)
+INSERT INTO `users` (`name`, `email`, `password_hash`, `phone`, `role`) VALUES
+('Admin Princel', 'princetixeira@gmail.com', '$2y$10$e8Z4w3s0FvVv3j9U4P1o7eR5o7v2L5oWq8eR5o7v2L5oWq8eR5o7v', '+91 9876543210', 'admin'),
+('Rashi Shukla', 'rashi@example.com', '$2y$10$e8Z4w3s0FvVv3j9U4P1o7eR5o7v2L5oWq8eR5o7v2L5oWq8eR5o7v', '+91 9812345678', 'customer');
+
+INSERT INTO `places` (`title`, `state_region`, `category`, `price_per_person`, `duration_days`, `image_url`, `description`, `is_featured`) VALUES
+('Manali Snow Peaks & Solang Valley', 'Himachal Pradesh', 'Hill Station', 12500.00, 5, 'images/WhatsApp Image 2025-09-18 at 22.18.17.jpeg', 'Scenic mountain views, paragliding, and historic temples.', 1),
+('Goa Coastal Cruise & Heritage Churches', 'Goa', 'Beach', 9500.00, 4, 'images/WhatsApp Image 2025-09-18 at 22.18.23 (1).jpeg', 'Golden beaches, water sports, night markets, and Portuguese architecture.', 1),
+('Jaipur Royal Forts & Palaces', 'Rajasthan', 'Heritage', 11000.00, 4, 'images/WhatsApp Image 2025-09-18 at 22.18.14.jpeg', 'Amber Fort, Hawa Mahal, authentic Rajasthani dining, and bazaars.', 1),
+('Rishikesh River Rafting & Camping', 'Uttarakhand', 'Adventure', 8000.00, 3, 'images/WhatsApp Image 2025-09-18 at 22.18.26.jpeg', 'White-water rafting on the Ganges, cliff jumping, and riverside camps.', 0),
+('Varanasi Ghats & Ganga Aarti', 'Uttar Pradesh', 'Spiritual', 7500.00, 3, 'images/WhatsApp Image 2025-09-18 at 22.21.47 (1).jpeg', 'Spiritual boat tours, ancient ghats, and evening Aarti ceremonies.', 0),
+('Kerala Backwaters & Tea Hills', 'Kerala', 'Hill Station', 18500.00, 5, 'images/WhatsApp Image 2025-09-18 at 22.21.42 (1).jpeg', 'Cruise palm-fringed backwaters and trek lush Munnar tea gardens.', 1),
+('Spiti Valley High Altitude Safari', 'Himachal Pradesh', 'Adventure', 22000.00, 7, 'images/WhatsApp Image 2025-09-18 at 22.21.43 (1).jpeg', 'Rugged Himalayan terrain, cliffside monasteries, and turquoise lakes.', 0),
+('Tirupati & Tamil Temple Trail', 'Tamil Nadu', 'Spiritual', 16000.00, 6, 'images/WhatsApp Image 2025-09-18 at 22.21.42 (2).jpeg', 'Magnificent Dravidian architecture and sacred coastal temple grounds.', 0),
+('Bandhavgarh & Kanha Tiger Safari', 'Madhya Pradesh', 'Adventure', 27000.00, 5, 'images/WhatsApp Image 2025-09-18 at 22.21.44 (1).jpeg', 'Premier tiger reserves featuring dense sal forests and guided jeep safaris.', 0),
+('Ajanta & Ellora Rock Heritage', 'Maharashtra', 'Heritage', 17500.00, 5, 'images/WhatsApp Image 2025-09-18 at 22.21.46.jpeg', 'Ancient UNESCO World Heritage rock-cut cave temples and sculptures.', 0);
+
+INSERT INTO `bookings` (`user_id`, `place_id`, `travel_date`, `number_of_guests`, `total_amount`, `booking_status`) VALUES
+(2, 1, '2026-11-15', 2, 25000.00, 'Confirmed');
+
+INSERT INTO `payments` (`booking_id`, `transaction_id`, `payment_method`, `amount_paid`, `payment_status`) VALUES
+(1, 'TXN_WW_20261023_001', 'UPI', 25000.00, 'Success');

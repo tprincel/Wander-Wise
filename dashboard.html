@@ -490,11 +490,11 @@
                         <label for="categoryFilter">Filter by Category:</label>
                         <select id="categoryFilter" onchange="filterPackages()">
                             <option value="all">All Categories</option>
-                            <option value="cultural">Cultural</option>
-                            <option value="nature">Nature</option>
-                            <option value="adventure">Adventure</option>
-                            <option value="beach">Beach</option>
-                            <option value="spiritual">Spiritual</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Heritage">Heritage</option>
+                            <option value="Beach">Beach</option>
+                            <option value="Hill Station">Hill Station</option>
+                            <option value="Spiritual">Spiritual</option>
                         </select>
                     </div>
                     
@@ -705,12 +705,12 @@
             const loading = document.getElementById('loading');
             const packagesContainer = document.getElementById('packagesContainer');
             
-            console.log('Starting to load packages from packages.php...');
+            console.log('Starting to load packages from api/get_places.php...');
             
             loading.style.display = 'block';
             packagesContainer.innerHTML = '<div class="no-packages"><h3>Loading packages...</h3><p>Please wait while we load available tours.</p></div>';
 
-            fetch('packages.php?' + new Date().getTime())
+            fetch('api/get_places.php?' + new Date().getTime())
                 .then(response => {
                     console.log('Response status:', response.status);
                     if (!response.ok) {
@@ -1091,36 +1091,55 @@
                 if (!travelDate) throw new Error('Please select a travel date');
                 if (!peopleCount) throw new Error('Please select number of people');
                 
+                // Get current user id from localStorage if logged in
+                let currentUserId = 0;
+                try {
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                    if (currentUser && currentUser.id) currentUserId = currentUser.id;
+                } catch (e) {}
+
                 const bookingData = {
+                    user_id: currentUserId,
+                    place_id: currentBookingPackage.id || 1,
                     customerName: customerName,
                     customerEmail: customerEmail,
                     customerPhone: customerPhone,
+                    name: customerName,
+                    email: customerEmail,
+                    phone: customerPhone,
                     travelDate: travelDate,
-                    peopleCount: peopleCount,
+                    travel_date: travelDate,
+                    peopleCount: parseInt(peopleCount),
+                    guests: parseInt(peopleCount),
                     package: currentBookingPackage
                 };
                 
-                console.log('Saving to database:', bookingData);
+                console.log('Saving to database via api/book_place.php:', bookingData);
                 
                 // Save to database
                 const saveResult = await saveBookingToDatabase(bookingData);
                 
                 if (saveResult.success) {
-                    // Also store in localStorage for bill.html
+                    const displayId = saveResult.booking_reference || ('WW' + saveResult.booking_id);
+
+                    // Store in localStorage for bill.html
                     localStorage.setItem('bookingData', JSON.stringify({
                         ...bookingData,
-                        bookingId: saveResult.booking_id,
+                        bookingId: displayId,
+                        rawBookingId: saveResult.booking_id,
+                        transactionId: saveResult.transaction_id || 'N/A',
+                        totalAmount: saveResult.total_amount || (currentBookingPackage.price * parseInt(peopleCount)),
                         status: 'Confirmed'
                     }));
                     
-                    alert(`✅ Booking Confirmed!\n\nThank you ${customerName}!\nBooking ID: ${saveResult.booking_id}\nAmount: ₹${currentBookingPackage.price.toLocaleString()}`);
+                    alert(`✅ Booking Confirmed!\n\nThank you, ${customerName}!\nBooking ID: ${displayId}\nTransaction ID: ${saveResult.transaction_id || 'Confirmed'}\nTotal Amount: ₹${(saveResult.total_amount || (currentBookingPackage.price * parseInt(peopleCount))).toLocaleString()}`);
                     
                     closeBookingForm();
                     
                     // Redirect to bill.html after short delay
                     setTimeout(() => {
                         window.location.href = 'bill.html';
-                    }, 1000);
+                    }, 800);
                     
                 } else {
                     throw new Error(saveResult.message || 'Failed to save booking to database');
@@ -1131,12 +1150,12 @@
             }
         });
 
-        // Database saving function
+        // Database saving function - calls api/book_place.php
         async function saveBookingToDatabase(bookingData) {
             try {
-                console.log('Sending to save_booking.php...');
+                console.log('Sending to api/book_place.php...');
                 
-                const response = await fetch('save_booking.php', {
+                const response = await fetch('api/book_place.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1147,21 +1166,16 @@
                 console.log('Response status:', response.status);
                 
                 if (!response.ok) {
-                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                    const errText = await response.text();
+                    try {
+                        const errJson = JSON.parse(errText);
+                        throw new Error(errJson.message || `Server error: ${response.status}`);
+                    } catch (pe) {
+                        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                    }
                 }
                 
-                const responseText = await response.text();
-                console.log('Raw response:', responseText);
-                
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                } catch (parseError) {
-                    console.error('JSON parse error:', parseError);
-                    throw new Error('Invalid JSON response from server');
-                }
-                
-                return result;
+                return await response.json();
                 
             } catch (error) {
                 console.error('Error saving booking:', error);

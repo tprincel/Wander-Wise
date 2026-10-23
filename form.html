@@ -54,10 +54,16 @@
 
             try {
                 // Post inquiry lead to backend
-                await fetch('save_inquiry.php', {
+                await fetch('api/contact.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, destination })
+                    body: JSON.stringify({ 
+                        name, 
+                        email, 
+                        destination,
+                        subject: 'Trip Discovery: ' + destination,
+                        message: `Travel inquiry for ${destination} requested by ${name}`
+                    })
                 });
             } catch (err) {
                 console.warn('Inquiry background save notice:', err);

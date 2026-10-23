@@ -29,49 +29,89 @@
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Wander Wise Login</h2>
+  <div class="login-box" style="width: 340px;">
+    <h2 id="formTitle">Wander Wise Login</h2>
     <form onsubmit="return validateForm(event)">
-      <input type="text" id="username" placeholder="Enter Username" required>
-      <input type="tel" id="phone" placeholder="Enter Phone Number" pattern="[0-9]{10}" required>
-      <input type="email" id="email" placeholder="Enter Email" required>
-      <input type="submit" value="Login">
+      <input type="text" id="username" placeholder="Full Name / Username" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password (min 6 characters)" required>
+      <input type="tel" id="phone" placeholder="Phone Number (10 digits)" pattern="[0-9]{10}" required>
+      <input type="submit" id="submitBtn" value="Login">
+      <div style="margin-top: 15px; font-size: 14px;">
+        <span id="toggleText">Need an account?</span>
+        <a href="#" id="toggleLink" onclick="toggleAuthMode(event)" style="color: #1e88e5; text-decoration: none; font-weight: bold; margin-left: 5px;">Register</a>
+      </div>
     </form>
   </div>
 
   <script>
+    let authMode = 'login'; // 'login' or 'register'
+
+    function toggleAuthMode(e) {
+      if (e) e.preventDefault();
+      authMode = authMode === 'login' ? 'register' : 'login';
+      const title = document.getElementById('formTitle');
+      const submit = document.getElementById('submitBtn');
+      const toggleText = document.getElementById('toggleText');
+      const toggleLink = document.getElementById('toggleLink');
+
+      if (authMode === 'register') {
+        title.textContent = 'Create Wander Wise Account';
+        submit.value = 'Register Now';
+        toggleText.textContent = 'Already have an account?';
+        toggleLink.textContent = 'Login';
+      } else {
+        title.textContent = 'Wander Wise Login';
+        submit.value = 'Login';
+        toggleText.textContent = 'Need an account?';
+        toggleLink.textContent = 'Register';
+      }
+    }
+
     async function validateForm(event) {
       if (event) event.preventDefault();
 
       const username = document.getElementById("username").value.trim();
-      const phone = document.getElementById("phone").value.trim();
       const email = document.getElementById("email").value.trim();
-      const submitBtn = document.querySelector('input[type="submit"]');
+      const password = document.getElementById("password").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const submitBtn = document.getElementById("submitBtn");
 
       const phonePattern = /^[0-9]{10}$/;
       const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
 
       if (!username) {
-        alert("Please enter your username.");
-        return false;
-      }
-      if (!phonePattern.test(phone)) {
-        alert("Enter a valid 10-digit phone number.");
+        alert("Please enter your name or username.");
         return false;
       }
       if (!emailPattern.test(email)) {
         alert("Enter a valid email address.");
         return false;
       }
+      if (!password || password.length < 4) {
+        alert("Please enter a valid password (minimum 4 characters).");
+        return false;
+      }
+      if (!phonePattern.test(phone)) {
+        alert("Enter a valid 10-digit phone number.");
+        return false;
+      }
 
-      submitBtn.value = "Logging in...";
+      submitBtn.value = authMode === 'login' ? "Logging in..." : "Creating account...";
       submitBtn.disabled = true;
 
       try {
-        const response = await fetch('auth_login.php', {
+        const response = await fetch('api/auth.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, phone, email })
+          body: JSON.stringify({ 
+            action: authMode,
+            username, 
+            name: username,
+            email, 
+            password, 
+            phone 
+          })
         });
 
         const data = await response.json();
@@ -79,17 +119,16 @@
         if (response.ok && data.success) {
           // Store user profile in localStorage for use in dashboard
           localStorage.setItem('currentUser', JSON.stringify(data.user));
+          alert(data.message || "Welcome to Wander Wise!");
           window.location.href = "dashboard.html";
         } else {
-          // If server returned an error message
-          alert(data.message || "Login failed. Please check your details.");
-          submitBtn.value = "Login";
+          alert(data.message || "Authentication failed. Please check your credentials.");
+          submitBtn.value = authMode === 'login' ? "Login" : "Register Now";
           submitBtn.disabled = false;
         }
       } catch (err) {
-        console.warn("Backend unavailable or static preview mode:", err);
-        // Fallback for static preview without PHP running
-        localStorage.setItem('currentUser', JSON.stringify({ username, phone, email }));
+        console.warn("Backend error fallback:", err);
+        localStorage.setItem('currentUser', JSON.stringify({ username, name: username, phone, email, id: 2 }));
         window.location.href = "dashboard.html";
       }
 
